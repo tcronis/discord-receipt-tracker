@@ -7,6 +7,13 @@ import lombok.Data;
 
 @Data
 public class Receipt{
+    public enum CATEGORIES{
+        GROCERY_STORE, 
+        FAST_FOOD,
+        RESTAURANT,
+        MISC
+    }
+
     private String store_name;
     private Double total, user_1_total, user_2_total;   //assumes user1 is always the person storing everything (user of this app/)
     private Date date;
@@ -18,7 +25,9 @@ public class Receipt{
      * @param date - the date that is occurred
      */
     public Receipt(String store_name, Double total, Date date){
-        
+        this.store_name = store_name;
+        this.total = total;
+        this.date = date;
     }
 
     /**
@@ -30,7 +39,11 @@ public class Receipt{
      * @param user2 - the second user's total
      */
     public Receipt(String store_name, Double total, Date date, Double user1, Double user2){
-
+        this.store_name = store_name;
+        this.total = total;
+        this.date = date;
+        this.user_1_total = user1;
+        this.user_2_total = user2;
     }
 
 
