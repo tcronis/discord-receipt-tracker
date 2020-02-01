@@ -6,8 +6,15 @@ package com.discrod.receipt;
  */
 public class App 
 {
+    public enum CATEGORIES{
+        GROCERY_STORE, 
+        FAST_FOOD,
+        RESTAURANT,
+        MISC
+    }
+
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+       
     }
 }
