@@ -30,7 +30,12 @@ public class App extends ListenerAdapter
         builder.addEventListeners(new App());
         builder.build();
     }
-
+    /*expected input
+        name of store, total amount, Date (mm/dd/yyyy or now for current date of now), user1 amount, user2 amount, name of file
+    
+    
+    
+    */
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
     	
