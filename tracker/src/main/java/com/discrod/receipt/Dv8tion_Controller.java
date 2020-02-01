@@ -1,10 +1,14 @@
 package com.discrod.receipt;
 
-public class Dv8tion_Controller{
+import java.io.File;
+import net.dv8tion.jda.*;
 
-    public void test(){
-        App.CATEGORIES
-    }
+public class Dv8tion_Controller{
+    
+    
+
+
+
 
 
 }
