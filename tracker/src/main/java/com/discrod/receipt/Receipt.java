@@ -19,6 +19,7 @@ public class Receipt{
      * @param store_name - name of the store
      * @param total - total of the trans
      * @param date - the date that is occurred
+     * @param file - the file object that will point at the picture sent (if it exists)
      */
     public Receipt(String store_name, Double total, Date date, File file){
         this.store_name = store_name;
@@ -35,6 +36,8 @@ public class Receipt{
      * @param date - date that the transaction occurred
      * @param user1 - the first user's total (the person storing the amount)
      * @param user2 - the second user's total
+     * @param file - the file object that will point at the picture sent (if it exists)
+
      */
     public Receipt(String store_name, Double total, Date date, Double user1, Double user2, File file){
         this.store_name = store_name;
