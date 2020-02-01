@@ -1,4 +1,4 @@
-package com.world_war_z.angel_flores;
+package com.discrod.receipt;
 
 import java.io.BufferedReader;
 import java.io.File;

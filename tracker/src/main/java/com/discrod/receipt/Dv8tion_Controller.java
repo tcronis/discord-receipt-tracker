@@ -2,7 +2,7 @@ package com.discrod.receipt;
 
 import java.io.File;
 
-import com.world_war_z.angel_flores.Authenticator;
+import com.discrod.receipt.Authenticator;
 
 import lombok.Getter;
 import net.dv8tion.jda.*;
