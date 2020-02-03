@@ -61,7 +61,7 @@
               <configuration>
                   <archive>
                       <manifest>
-                          <mainClass>com.world_war_z.angel_flores.App</mainClass>
+                          <mainClass>com.discrod.receipt.App</mainClass>
                       </manifest>
                   </archive>
                   <descriptorRefs>
