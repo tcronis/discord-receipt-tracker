@@ -46,10 +46,7 @@ public class App extends ListenerAdapter
 
         }else{
             Boolean img = (event.getMessage().getAttachments().size() > 0) ? true : false;
-            System.out.println(event.getMessage().getContentDisplay().replaceAll(" ", ""));
             ArrayList<String> value = get_values(event.getMessage().getContentDisplay().replaceAll(" ", ""));
-            for(String v : value)
-                System.out.print(v);
             String name = null, date = null;
             Double total = 0.0;
             CATEGORIES cat = CATEGORIES.MISC;
