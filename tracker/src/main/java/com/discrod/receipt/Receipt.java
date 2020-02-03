@@ -1,7 +1,12 @@
 package com.discrod.receipt;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.Date;
+
+import com.discrod.receipt.App.CATEGORIES;
+import com.opencsv.CSVWriter;
+
 import lombok.Data;
 
 
@@ -10,9 +15,10 @@ import lombok.Data;
 public class Receipt{
 
     private String store_name;
-    private Double total, user_1_total, user_2_total;   //assumes user1 is always the person storing everything (user of this app/)
-    private Date date;
+    private Double total;   //assumes user1 is always the person storing everything (user of this app/)
+    private String date;
     private File img;
+    private CATEGORIES cat;
 
     /**
      * If the reciept wasn't split between two people
@@ -21,33 +27,52 @@ public class Receipt{
      * @param date - the date that is occurred
      * @param file - the file object that will point at the picture sent (if it exists)
      */
-    public Receipt(String store_name, Double total, Date date, File file){
+    public Receipt(String store_name, Double total, String date, CATEGORIES cat, File file){
         this.store_name = store_name;
         this.total = total;
         this.date = date;
-        if(file.exists())
+        this.cat = cat;
+        if(file != null && file.exists())
             this.img = file;
     }
+    
 
-    /**
-     * If the reciept was split between two people
-     * @param store_name - name of the store
-     * @param total - total of the receipt
-     * @param date - date that the transaction occurred
-     * @param user1 - the first user's total (the person storing the amount)
-     * @param user2 - the second user's total
-     * @param file - the file object that will point at the picture sent (if it exists)
+    public void save_data() throws Exception{
+        //check if there exists a directory with the date
+        File month_directory = new File("data/"+date);
+        File month_csv = new File("data/"+date+"/tracker.csv");
+        Boolean csv_existed = month_csv.exists();
+        System.out.println(month_csv.getAbsolutePath());
+        System.out.println(month_csv.getPath());
+        System.out.println(month_csv.toPath());
+        File img_directory = new File("data/"+date+"/imgs/");
+        System.out.println(month_directory.exists());
+        System.out.println(month_csv.exists());
+        System.out.println(img_directory.exists());
+        if(!month_directory.exists())
+            month_directory.mkdirs();
+        if(!img_directory.exists())
+            img_directory.mkdirs();
+        if(!month_csv.exists())
+            month_csv.createNewFile();
+        //open csv and add data (name of store, total amount spent, date)
+        CSVWriter writer = new CSVWriter(new FileWriter(month_csv, true));
+        if(!csv_existed){
+            String [] headers = {"Store Name", "Total amount spent", "Date of the Transaction", "Category"};
+            writer.writeNext(headers);
+            String [] values = {store_name, total.toString(), date, cat.toString()};
+            writer.writeNext(values);
+        }else{
+            String [] values = {store_name, total.toString(), date, cat.toString()};
+            writer.writeNext(values);
+        }
+        writer.close();
+        //move around the existing file to the new directory and save it there with the new name
+            //img - storename_date_total
 
-     */
-    public Receipt(String store_name, Double total, Date date, Double user1, Double user2, File file){
-        this.store_name = store_name;
-        this.total = total;
-        this.date = date;
-        this.user_1_total = user1;
-        this.user_2_total = user2;
-        if(file.exists())
-            this.img = file;
     }
+
+
 
 
 }
