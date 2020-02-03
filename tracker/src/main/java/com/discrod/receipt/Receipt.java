@@ -38,11 +38,12 @@ public class Receipt{
     
 
     public void save_data() throws Exception{
+        String month = date.substring(0,2);
         //check if there exists a directory with the date
-        File month_directory = new File("data/"+date);
-        File month_csv = new File("data/"+date+"/tracker.csv");
+        File month_directory = new File("data/"+month);
+        File month_csv = new File("data/"+month+"/tracker.csv");
         Boolean csv_existed = month_csv.exists();
-        File img_directory = new File("data/"+date+"/imgs/");
+        File img_directory = new File("data/"+month+"/imgs/");
         if(!month_directory.exists())
             month_directory.mkdirs();
         if(!img_directory.exists())

@@ -39,57 +39,66 @@ public class App extends ListenerAdapter
     */
     @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
-        
-        if(event.getMessage().getContentDisplay().equals("q"))
-            System.exit(0);
-        else if(event.getMessage().getContentDisplay().contains("stats")){
+        if(!event.getAuthor().isBot()){
+            if(event.getMessage().getContentDisplay().equals("q"))
+                System.exit(0);
+            else if(event.getMessage().getContentDisplay().contains("stats")){
 
-        }else{
-            Boolean img = (event.getMessage().getAttachments().size() > 0) ? true : false;
-            ArrayList<String> value = get_values(event.getMessage().getContentDisplay().replaceAll(" ", ""));
-            String name = null, date = null;
-            Double total = 0.0;
-            CATEGORIES cat = CATEGORIES.MISC;
-            try{
-                name = value.get(0);
-                date = value.get(2);
-                total = Double.parseDouble(value.get(3));
-                String temp = value.get(1);
-                if(temp.equalsIgnoreCase("GROCERY_STORE") || temp.equalsIgnoreCase("groceries") || temp.equalsIgnoreCase("grocery"))
-                    cat = CATEGORIES.GROCERY_STORE;
-                else if (temp.equalsIgnoreCase("FAST_FOOD") || temp.equalsIgnoreCase("fast food") || temp.equalsIgnoreCase("ff"))
-                    cat = CATEGORIES.FAST_FOOD;
-                else if(temp.equalsIgnoreCase("RESTAURANT") || temp.equalsIgnoreCase("r"))
-                    cat = CATEGORIES.RESTAURANT;
-                else if(temp.equalsIgnoreCase("ALCOHOL") || temp.equalsIgnoreCase("Beer") || temp.equalsIgnoreCase("wine") || temp.equalsIgnoreCase("a"))
-                    cat = CATEGORIES.ALCOHOL;
-                else if(temp.equalsIgnoreCase("Gas"))
-                    cat = CATEGORIES.GAS;
-                else 
-                    cat = CATEGORIES.MISC;
-
-                
-            }catch(Exception e){e.printStackTrace();}
-            File f = null;
-            if(img){
+            }else if(event.getMessage().getContentDisplay().contains(",")){
+                Boolean img = (event.getMessage().getAttachments().size() > 0) ? true : false;
+                ArrayList<String> value = get_values(event.getMessage().getContentDisplay().replaceAll(" ", ""));
+                String name = null, date = null;
+                Double total = 0.0;
+                CATEGORIES cat = CATEGORIES.MISC;
                 try{
-                    event.getMessage().getAttachments().get(0).downloadToFile();
-                    f = new File(event.getMessage().getAttachments().get(0).getFileName());
-                    while(!f.exists()){
-                        Thread.sleep(2000);
-                    }
+                    name = value.get(0);
+                    date = value.get(2);
+                    total = Double.parseDouble(value.get(3));
+                    String temp = value.get(1);
+                    if(temp.equalsIgnoreCase("GROCERY_STORE") || temp.equalsIgnoreCase("groceries") || temp.equalsIgnoreCase("grocery"))
+                        cat = CATEGORIES.GROCERY_STORE;
+                    else if (temp.equalsIgnoreCase("FAST_FOOD") || temp.equalsIgnoreCase("fast food") || temp.equalsIgnoreCase("ff"))
+                        cat = CATEGORIES.FAST_FOOD;
+                    else if(temp.equalsIgnoreCase("RESTAURANT") || temp.equalsIgnoreCase("r"))
+                        cat = CATEGORIES.RESTAURANT;
+                    else if(temp.equalsIgnoreCase("ALCOHOL") || temp.equalsIgnoreCase("Beer") || temp.equalsIgnoreCase("wine") || temp.equalsIgnoreCase("a"))
+                        cat = CATEGORIES.ALCOHOL;
+                    else if(temp.equalsIgnoreCase("Gas"))
+                        cat = CATEGORIES.GAS;
+                    else 
+                        cat = CATEGORIES.MISC;
+
                     
                 }catch(Exception e){e.printStackTrace();}
+                File f = null;
+                if(img){
+                    try{
+                        event.getMessage().getAttachments().get(0).downloadToFile();
+                        f = new File(event.getMessage().getAttachments().get(0).getFileName());
+                        while(!f.exists()){
+                            Thread.sleep(2000);
+                        }
+                        
+                    }catch(Exception e){e.printStackTrace();}
+                }
+                try{
+                    Receipt r = new Receipt(name, total, date, cat, f);
+                    r.save_data();
+                    event.getAuthor().openPrivateChannel().queue((channel) -> {
+                        channel.sendMessage("added the data").queue();
+                    });
+                }catch(Exception e){
+                    event.getAuthor().openPrivateChannel().queue((channel) -> {
+                        channel.sendMessage("error in adding data").queue();
+                    });
+                    e.printStackTrace();
+                }
+                
             }
-            try{
-                Receipt r = new Receipt(name, total, date, cat, f);
-                r.save_data();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            
+
         }
 
+        
         
 
         
@@ -102,7 +111,6 @@ public class App extends ListenerAdapter
         ArrayList<String> v = new ArrayList<>();
         int index = value.indexOf(",");
         while(value != null){
-            System.out.println(value.substring(0, index));
             v.add(value.substring(0, index));
             if(value.length() == index)
                 value = null;
