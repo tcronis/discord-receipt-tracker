@@ -42,13 +42,7 @@ public class Receipt{
         File month_directory = new File("data/"+date);
         File month_csv = new File("data/"+date+"/tracker.csv");
         Boolean csv_existed = month_csv.exists();
-        System.out.println(month_csv.getAbsolutePath());
-        System.out.println(month_csv.getPath());
-        System.out.println(month_csv.toPath());
         File img_directory = new File("data/"+date+"/imgs/");
-        System.out.println(month_directory.exists());
-        System.out.println(month_csv.exists());
-        System.out.println(img_directory.exists());
         if(!month_directory.exists())
             month_directory.mkdirs();
         if(!img_directory.exists())
@@ -67,6 +61,13 @@ public class Receipt{
             writer.writeNext(values);
         }
         writer.close();
+
+        if(img != null){
+            String path = img_directory.toString() + "/" + store_name + "_" + date + "_" + total + ".jpg";
+            img.renameTo(new File(path));
+            // img.delete();
+        }
+        
         //move around the existing file to the new directory and save it there with the new name
             //img - storename_date_total
 
