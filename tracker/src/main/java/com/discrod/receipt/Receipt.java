@@ -14,9 +14,7 @@ import lombok.Data;
 @Data
 public class Receipt{
 
-    private String store_name;
-    private Double total;   //assumes user1 is always the person storing everything (user of this app/)
-    private String date;
+    private String store_name, total, date;
     private File img;
     private CATEGORIES cat;
 
@@ -27,7 +25,7 @@ public class Receipt{
      * @param date - the date that is occurred
      * @param file - the file object that will point at the picture sent (if it exists)
      */
-    public Receipt(String store_name, Double total, String date, CATEGORIES cat, File file){
+    public Receipt(String store_name, String total, String date, CATEGORIES cat, File file){
         this.store_name = store_name;
         this.total = total;
         this.date = date;

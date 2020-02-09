@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import lombok.val;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
@@ -42,6 +43,7 @@ public class App extends ListenerAdapter
     private static File img_object = null;
     private static CATEGORIES category = null;
     private static boolean ask_for_images = false, start_inputs = false;
+    public static boolean junit_test = false;
     /*expected input
         name of store, category, Date (mm-dd-yyyy or now for current date of now), total
     */
@@ -65,15 +67,38 @@ public class App extends ListenerAdapter
     private static void sendMessage(PrivateMessageReceivedEvent event, String message){
         event.getAuthor().openPrivateChannel().queue((channel) -> {channel.sendMessage(message).queue();});
     }
-    
-    private static boolean competedInput(){
-        if(store_name != null && category != null)
-            return true;
-        else   
-            return false;
+
+    private static void setValuesToNull(){
+        store_name = null;
+        total_amount = null;
+        date = null;
+        category = null;
+        img_object = null;
     }
 
-    private static void runData(){
+    public static ArrayList<String> receiptValues(){
+        ArrayList<String> values = new ArrayList<>();
+        values.add(store_name);
+        values.add(total_amount);
+        values.add(date);
+        values.add(category.toString());
+        if(img_object != null){
+            String temp = img_object.getName() + ", " + img_object.getAbsolutePath();
+            values.add(temp); 
+        }else
+            values.add("null");
+        return values;
+    }
+
+    private static void runData() throws Exception{
+        if(junit_test){
+
+        }else{
+            Receipt receipt = new Receipt(store_name, total_amount, date, category, img_object);
+            receipt.save_data();
+            setValuesToNull();
+        }
+
         System.out.println(store_name + ", " + total_amount + ", " + date + ", " + category.toString());
     }
 
