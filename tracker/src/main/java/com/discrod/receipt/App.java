@@ -42,14 +42,14 @@ public class App extends ListenerAdapter
     private static String store_name = null, total_amount = null, date = null;
     private static File img_object = null;
     private static CATEGORIES category = null;
-    private static boolean ask_for_images = false, start_inputs = false;
+    private static boolean ask_for_images = false, start_inputs = false, run_stats = false;
     public static boolean junit_test = false;
     /*expected input
         name of store, category, Date (mm-dd-yyyy or now for current date of now), total
     */
 
     //Attempts to parse a string value into a hard coded category, will eventually switch over to a custom category option
-    private static CATEGORIES categoryParsing(String temp){
+    public static CATEGORIES categoryParsing(String temp){
         if(temp.equalsIgnoreCase("GROCERY_STORE") || temp.equalsIgnoreCase("groceries") || temp.equalsIgnoreCase("grocery"))
             return CATEGORIES.GROCERY_STORE;
         else if (temp.equalsIgnoreCase("FAST_FOOD") || temp.equalsIgnoreCase("fast food") || temp.equalsIgnoreCase("ff"))
@@ -64,7 +64,7 @@ public class App extends ListenerAdapter
             return CATEGORIES.MISC;
     }
 
-    private static void sendMessage(PrivateMessageReceivedEvent event, String message){
+    public static void sendMessage(PrivateMessageReceivedEvent event, String message){
         event.getAuthor().openPrivateChannel().queue((channel) -> {channel.sendMessage(message).queue();});
     }
 
@@ -98,8 +98,6 @@ public class App extends ListenerAdapter
             receipt.save_data();
             setValuesToNull();
         }
-
-        System.out.println(store_name + ", " + total_amount + ", " + date + ", " + category.toString());
     }
 
 
@@ -138,7 +136,12 @@ public class App extends ListenerAdapter
                         }catch(Exception e){e.printStackTrace();}
                     }
                     start_inputs = false;
-                    runData();
+                    try{
+                        runData();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    
                 }  
             }
                 //no receipt object in progress
@@ -147,8 +150,20 @@ public class App extends ListenerAdapter
                 sendMessage(event, "Enter the store name please");
             }
             //run the statics tracker for a given month 
-            else if(message.equalsIgnoreCase("!stats")){
-
+            else if(message.equalsIgnoreCase("!stats") || run_stats){
+                if(!run_stats){
+                    run_stats = true;
+                    sendMessage(event, "Please enter the month for a stats run (MM)");
+                }else{
+                    run_stats = false;
+                    try{
+                        Stats st = new Stats(message);
+                        st.printStats(event);
+                    } catch(Exception e){
+                        e.printStackTrace(); 
+                    }
+                    
+                }
             }
         }
     }
