@@ -67,15 +67,6 @@ public class Stats{
         else
             App.sendMessage(event, "File not found in directory for the month: " + month);
 
-        //check if file exists
-
-        //open file and read in data recrusively 
-
-        //structure the data to be held in a map
-
-        //store the totals
-
-        //display how much was in totals was spent for the month
 
 
 

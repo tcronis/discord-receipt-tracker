@@ -10,6 +10,7 @@
   <packaging>jar</packaging>
 
 
+
   <name>tracker</name>
 
   <properties>
@@ -64,6 +65,7 @@
           <plugin>
               <artifactId>maven-assembly-plugin</artifactId>
               <configuration>
+              <finalName>Tracker</finalName>
                   <archive>
                       <manifest>
                           <mainClass>com.discrod.receipt.App</mainClass>

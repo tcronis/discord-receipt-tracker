@@ -26,7 +26,7 @@ public class Receipt{
      * @param file - the file object that will point at the picture sent (if it exists)
      */
     public Receipt(String store_name, String total, String date, CATEGORIES cat, File file){
-        this.store_name = store_name;
+        this.store_name = store_name.toLowerCase();
         this.total = total;
         this.date = date;
         this.cat = cat;
@@ -64,11 +64,8 @@ public class Receipt{
         if(img != null){
             String path = img_directory.toString() + "/" + store_name + "_" + date + "_" + total + ".jpg";
             img.renameTo(new File(path));
-            // img.delete();
         }
-        
-        //move around the existing file to the new directory and save it there with the new name
-            //img - storename_date_total
+    
 
     }
 
