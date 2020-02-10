@@ -6,7 +6,7 @@ This is by no means finished and the functionality it can do now is very limited
 ## Functionality ##
  - For storing data, you can interact with the bot by starting to store a receipt with the command '!start' or '!create receipt'.
     - The name of the store is required first
-        - It can be in any format, but misspellings aren't checked so Walmart and Walmrt aren't considered to be the same thing when running the statical analysis. 
+        - It can be in any format, but misspellings aren't checked so Walmart and Walmrt aren't considered to be the same thing when running the statistical analysis. 
     - Next, the date is requested, just enter in the amount without any extra symbols
         - I.E 77.89 not $ 77.98
             - There is no input validation really, so you will cause an error when throwing off the inputs
